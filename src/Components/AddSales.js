@@ -213,11 +213,11 @@ const AddSales = () => {
                                         onChange={handleWorkChange}
                                         >
                                             
-                                            {/* {work.map((val) =>(
+                                            {workName.map((val) =>(
                                                 <MenuItem key = {val.name} value={val.name}>
                                                     {val.name}
                                                 </MenuItem>
-                                            ))} */}
+                                            ))}
                                     </TextField>
                                         {/* <SelectWork /> */}
                                     </Grid>
