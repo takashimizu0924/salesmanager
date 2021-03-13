@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 // import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import  { Button, Grid, MenuItem, useFormControl }  from '@material-ui/core';
+import  { Button, Grid, MenuItem, Select, useFormControl }  from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -42,13 +42,23 @@ const useStyles = makeStyles({
     },
 });
 
-const workName = Data.data.work.airCon
+const rows = [
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
+    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
 
-const getJsonData = () => {
-    workName.map((name) =>(
-        console.log(name)
-    ))
-}
+];
+
 
 const workItems = [
     {
@@ -73,19 +83,58 @@ const workItems = [
     },
 ];
 
-const SelectWorkItem = () => {
-    const [work, setWork] = React.useState('')
+
+var workName = Data.data.work.セレクト内から工事を選択してください
+
+// 
+const WorkContents = (workItem) => {
+    if (workItem === 'エアコン工事'){
+        workName = Data.data.work.エアコン工事
+
+    }else if (workItem === 'アンテナ工事'){
+        workName = Data.data.work.アンテナ工事
     
-    const handleChange = (event) => {
-        setWork(event.target.value)
     }
+    return workName
+}
+
+const SelectWork = (workname) => {
+    
+    const [work, setWork] = React.useState('');
+    const handleWorkChange = (event) => {
+        setWork(event.target.value)
+    };
+    return (
+
+        <TextField
+            variant="outlined"
+            fullWidth
+            select
+            value={work}
+            onInput={e => setWork(e.target.value)}
+            onChange={handleWorkChange}
+            >
+                {workName.map((val) =>(
+                    <MenuItem key = {val.name} value={val.name}>
+                        {val.name}
+                    </MenuItem>
+                ))}
+            </TextField>
+    )
+}
+
+const SelectWorkItem = () => {
+    const [workItem, setWorkItem] = React.useState("");
+    const handleChange = (event) => {
+        setWorkItem(event.target.value) 
+    };
     return(
         <TextField
             variant="outlined"
             fullWidth
             select
             label="セレクト"
-            value={work}
+            value={workItem}
             onChange={handleChange}>
                 {workItems.map((val) => (
                 <MenuItem key={val.value} value={val.value} >
@@ -96,64 +145,22 @@ const SelectWorkItem = () => {
     )
 };
 
-
-
-function DatePicker(){
-    const [selectDate, setSelectDate] = React.useState(new Date());
-    const handleDateChange = (date) =>{
-        setSelectDate(date);
-    };
-    
-    return(
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid item xs={12}>
-                <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="yyyy/MM/dd"
-                margin="normal"
-                id="date-picker-inline"
-                label="完了日"
-                value={selectDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                }}
-                />
-            </Grid>
-        </MuiPickersUtilsProvider>
-    )
-};
-
-const rows = [
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-
-];
-
-
-
-
 const AddSales = () => {
-
+    const mainData = {}
     const AddItem = () => {
-        console.log(name)
-    }
+        console.log(name,workItem,work)
+    };
     const classes = useStyles();
     const { handleSubmit } = useForm();
     const [name, setName ] = React.useState();
-    getJsonData();
+    const [workItem, setWorkItem] = React.useState("");
+    const handleChange = (event) => {setWorkItem(event.target.value)};
+    const [work, setWork] = React.useState("");
+    const handleWorkChange = (event) => {setWork(event.target.value)};
+    
+    React.useEffect(() => {
+
+    })
 
     return (
         <>
@@ -178,11 +185,39 @@ const AddSales = () => {
                                         <TextField onInput={e => setName(e.target.value)} fullWidth label="お客様名" variant="outlined"></TextField>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        {/* <TextField fullWidth label="工事項目" variant="outlined"></TextField> */}
-                                        <SelectWorkItem />
+                                    <TextField
+                                        variant="outlined"
+                                        fullWidth
+                                        select
+                                        label="セレクト"
+                                        value={workItem}
+                                        onChange={handleChange}
+                                        onInput={e => setWorkItem(e.target.value)}>
+                                            {workItems.map((val) => (
+                                            <MenuItem key={val.value} value={val.value} >
+                                                {val.label}
+                                            </MenuItem>))}
+                                    </TextField>
+                                        {/* <SelectWorkItem /> */}
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <TextField fullWidth label="工事内容" variant="outlined"></TextField>
+                                    <TextField
+                                        variant="outlined"
+                                        fullWidth
+                                        select
+                                        label="工事内容"
+                                        value={work}
+                                        onInput={e => setWork(e.target.value)}
+                                        onChange={handleWorkChange}
+                                        >
+                                            
+                                            {WorkContents(workItem).map((val) =>(
+                                                <MenuItem key = {val.name} value={val.name}>
+                                                    {val.name}
+                                                </MenuItem>
+                                            ))}
+                                    </TextField>
+                                        {/* <SelectWork /> */}
                                     </Grid>
                                         <Grid item xs={3}>
                                             <TextField fullWidth label="数量" variant="outlined"></TextField>
