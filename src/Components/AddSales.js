@@ -84,7 +84,7 @@ const workItems = [
 ];
 
 
-var workName = Data.data.work.セレクト内から工事を選択してください
+var workName = Data.data.work.root
 
 // 
 const WorkContents = (workItem) => {
@@ -94,6 +94,8 @@ const WorkContents = (workItem) => {
     }else if (workItem === 'アンテナ工事'){
         workName = Data.data.work.アンテナ工事
     
+    }else{
+        workName = Data.data.work.other
     }
     return workName
 }
