@@ -134,6 +134,8 @@ const GetPriceData = (quantity, arg_name, arg_contents) => {
     var flag = GetPriceFlag();
     quantity_data = quantity;
     
+
+
     for(var idx in obj_name){
         property = Object.keys(obj_name[idx]);
         for(var k in property){
@@ -199,14 +201,18 @@ const AddSales = () => {
     const [workItem, setWorkItem] = React.useState("");
     const [work, setWork] = React.useState("");
     const [price, setPrice] = React.useState("");
+    // const [showPrice, setShowPrice] = React.useState("");
 
     const handleChange = (event) => {setWorkItem(event.target.value)};
     const handleWorkChange = (event) => {setWork(event.target.value)};
     const handlePriceFlgChange = () => {SetPriceFlag(true)};
     
-    React.useEffect(() => {
-
-    })
+    // React.useEffect(() => {
+    //     const testShowPrice = () =>{
+    //         console.log("test")
+    //     };
+    //     testShowPrice();
+    // },[showPrice])
 
     return (
         <>
@@ -273,7 +279,8 @@ const AddSales = () => {
                                             <TextField
                                                 fullWidth label="金額" 
                                                 //value={price_data}
-                                                onClick={handlePriceFlgChange} 
+                                                onClick={handlePriceFlgChange}
+                                                // onChange={() => setShowPrice(price_data)}
                                                 onInput={e => price_data = e.target.value}
                                                 variant="outlined">
                                             </TextField>

@@ -177,10 +177,12 @@ const　Sidebar= (props)=> {
               <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
               <ListItemText className={classes.drawerListText} primary={"経費管理"} />
           </ListItem>
+          <Link to={"/allSales"} className={classes.link}>
           <ListItem button>
           <ListItemIcon><AccountBalanceIcon /></ListItemIcon>
-              <ListItemText className={classes.drawerListText} primary={"口座管理"} />
+              <ListItemText className={classes.drawerListText} primary={"売上一覧"} />
           </ListItem>
+          </Link>
           <ListItem button>
           <ListItemIcon><PeopleIcon /></ListItemIcon>
               <ListItemText className={classes.drawerListText} primary={"人事管理"} />
