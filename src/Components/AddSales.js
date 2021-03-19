@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import ShowSales from "./ShowSales";
 
 import Data from '../workData/WorkItem.json'
+import axios from 'axios';
 
 // 作業項目選択
 // import FormControl from '@material-ui/core/FormControl';
@@ -38,7 +39,7 @@ const useStyles = makeStyles({
         marginRight:1,
     },
     formControl:{
-        width:500,
+        width:600,
     },
 });
 
@@ -175,24 +176,54 @@ const GetPriceFlag = () => {
     return quantity_clickFlg;
 }
 
-const AddSales = () => {
+// データベース登録 "POSTrequest"
+const testData = {
+    name : "2.5kw標準工事",
+    price : 8000
+}
+const AddDataBase = async() => {
+    // const options = {
+    //     headers: { 'Content-Type': 'application/json;charset=utf-8' }
+    //   };
+    // axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+    // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+    const url = "http://localhost:8080/item"
+    await axios.post(url,testData).then(res => {
+        console.log(res)
+    })
+}
+
+const AddSales =() => {
     const mainData = {}
-    const AddItem = () => {
+    
+    const AddItem = async() => {
         var data_object = {
             id:id_data,
-            date:date_data,
+            completedDate:date_data,
             recipetNumber:recipe_data,
             name:name_data,
             workItem:workItem_data,
             quantity:quantity_data,
             price:price_data
         };
-
-        id_data++;
-        // console.log(name,workItem,work);
-        console.log(workItem,work);
-        console.log(id_data,date_data,recipe_data,name_data,workItem_data,quantity_data,price_data);
         rows.push(data_object);
+        
+        // const options = {
+        //     headers: { 'Content-Type': 'application/json;charset=utf-8' }
+        //   };
+        // axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
+        // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+        const url = "http://localhost:8080/item"
+        axios.post(url,rows).then(res => {
+            console.log(res)
+        })
+        id_data++;
+        
+        // console.log(name,workItem,work);
+        // console.log(workItem,work);
+        // console.log(id_data,date_data,recipe_data,name_data,workItem_data,quantity_data,price_data);
+        // rows.push(data_object);
+        console.log(rows)
         GlobalBufferInit();
     };
     const classes = useStyles();
@@ -217,7 +248,7 @@ const AddSales = () => {
     return (
         <>
             <Grid container justify="center" className={classes.root}>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <Card className={classes.carfContent} >
                         <CardContent>
                             <Typography variant="h5">
@@ -294,8 +325,11 @@ const AddSales = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                     <ShowSales rows={rows}/>
+                </Grid>
+                <Grid item xs={4} justify="center">
+                    <Button variant="outlined" onClick={AddDataBase}>プッシュ</Button>
                 </Grid>
             </Grid>
         </>
