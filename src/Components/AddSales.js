@@ -18,12 +18,9 @@ import { useForm } from 'react-hook-form';
 import ShowSales from "./ShowSales";
 
 import Data from '../workData/WorkItem.json'
+
 import axios from 'axios';
 
-// 作業項目選択
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
-// import InputLabel from '@material-ui/core/InputLabel';
 
 
 const useStyles = makeStyles({
@@ -43,34 +40,13 @@ const useStyles = makeStyles({
     },
 });
 
-/*
-const rows = [
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
-    { id:0,date:'2021/3/01',recipetNumber:'1017402004005',name:'清水',workItem:'2.2kﾋｮｳｼﾞｭﾝｺｳｼﾞ',quantity:1,price:'7700'},
 
-];
-*/
 
 var quantity_clickFlg = false;
-var id_data = 0;
-var date_data;
-var recipe_data;
-var name_data;
-var workItem_data;
+
 var quantity_data = 0;
 var price_data = 0;
-
+var addRows = [];
 var rows = [];
 
 const workItems = [
@@ -99,18 +75,12 @@ const workItems = [
 
 var workName = Data.data.work.root
 
-// 情報初期化処理
-const GlobalBufferInit = () => {
-    quantity_clickFlg = false;
-    quantity_data = 0;
-    price_data = 0;
-}
 
 // 工事内容判別用関数
 const WorkContents = (workItem) => {
     var result_map_data;
     // グローバル変数に格納
-    workItem_data = workItem;
+   
 
     if (workItem === 'エアコン工事'){
         workName = Data.data.work.エアコン工事
@@ -135,15 +105,11 @@ const GetPriceData = (quantity, arg_name, arg_contents) => {
     var flag = GetPriceFlag();
     quantity_data = quantity;
     
-
-
     for(var idx in obj_name){
         property = Object.keys(obj_name[idx]);
         for(var k in property){
             if(obj_name[idx][property[k]] == arg_contents){
                 price_data = obj_name[idx][property[++k]];
-                console.log(obj_name[idx][property[k]]);
-                console.log(obj_name[idx][property[++k]]);
                 break;
             }
         }
@@ -151,18 +117,12 @@ const GetPriceData = (quantity, arg_name, arg_contents) => {
     
     if(flag == false){
         calc_data = price_data * quantity_data;
-        console.log(flag);
+        // console.log(flag);
     }else{
         SetPriceFlag(false);
         calc_data = price_data;
         console.log(flag);
-    }
-
-    console.log(obj_name);
-    //console.log(obj_price);
-    console.log(arg_name);
-    console.log(arg_contents);
-
+    }  
     return calc_data;
 }
 
@@ -177,73 +137,66 @@ const GetPriceFlag = () => {
 }
 
 // データベース登録 "POSTrequest"
-const testData = {
-    name : "2.5kw標準工事",
-    price : 8000
-}
 const AddDataBase = async() => {
-    // const options = {
-    //     headers: { 'Content-Type': 'application/json;charset=utf-8' }
-    //   };
-    // axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-    // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+    
     const url = "http://localhost:8080/item"
-    await axios.post(url,testData).then(res => {
+    await axios.post(url,addRows).then(res => {
         console.log(res)
     })
+    // addRows = []
 }
 
 const AddSales =() => {
-    const mainData = {}
-    
-    const AddItem = async() => {
-        var data_object = {
-            id:id_data,
-            completedDate:date_data,
-            recipetNumber:recipe_data,
-            name:name_data,
-            workItem:workItem_data,
-            quantity:quantity_data,
-            price:price_data
-        };
-        rows.push(data_object);
-        
-        // const options = {
-        //     headers: { 'Content-Type': 'application/json;charset=utf-8' }
-        //   };
-        // axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-        // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-        const url = "http://localhost:8080/item"
-        axios.post(url,rows).then(res => {
-            console.log(res)
-        })
-        id_data++;
-        
-        // console.log(name,workItem,work);
-        // console.log(workItem,work);
-        // console.log(id_data,date_data,recipe_data,name_data,workItem_data,quantity_data,price_data);
-        // rows.push(data_object);
-        console.log(rows)
-        GlobalBufferInit();
-    };
     const classes = useStyles();
     const { handleSubmit } = useForm();
-    const [name, setName ] = React.useState();
+    const [date, setDate ] = React.useState("");
+    const [reciept, setReciept ] = React.useState("");
+    const [name, setName ] = React.useState("");
     const [workItem, setWorkItem] = React.useState("");
     const [work, setWork] = React.useState("");
-    const [price, setPrice] = React.useState("");
-    // const [showPrice, setShowPrice] = React.useState("");
-
+    const [quantity, setQuantity ] = React.useState();
+    const [price, setPrice] = React.useState();
     const handleChange = (event) => {setWorkItem(event.target.value)};
     const handleWorkChange = (event) => {setWork(event.target.value)};
+    const handleDateChange = (event) => {setDate(event.target.value)};
+    const handleRecieptChange = (event) => {setReciept(event.target.value)};
+    const handlenNameChange = (event) => {setName(event.target.value)};
+    const handleQuantityChange = (event) => {setQuantity(event.target.value)};
+    const handlePriceChange = (event) => {setPrice(event.target.value)};
+
     const handlePriceFlgChange = () => {SetPriceFlag(true)};
+
+    // 数量を監視し、金額を計算する
+    const calcPrice = () => {
+        var totalPrice = 0;
+        totalPrice = quantity * price
+        return totalPrice
+    }
+    var d = calcPrice();
+    console.log(d)
+
+    // 登録内容を追加する場合のオブジェクト格納用
+        // addRowsに格納する
+        // *******TODO********
+        // PriceがString型になっているためInt型にする
+
+    var data_object = {
+        // id:id_data,
+        completedDate:date,
+        recieptNumber:reciept,
+        name:name,
+        workItem:workItem,
+        quantity:quantity,
+        price:price
+        };
+        const AddItem = () => {
+            addRows.push(data_object)
+            console.log(addRows)
+        };
+
     
-    // React.useEffect(() => {
-    //     const testShowPrice = () =>{
-    //         console.log("test")
-    //     };
-    //     testShowPrice();
-    // },[showPrice])
+    
+    
 
     return (
         <>
@@ -258,14 +211,14 @@ const AddSales =() => {
                                 <Grid container spacing={2} justify="flex-end">
                                     <Grid item xs={3} >
                                         {/* <DatePicker /> */}
-                                        <TextField type="date" onInput={e => date_data = e.target.value} variant="outlined">
+                                        <TextField type="date" onChange={handleDateChange} variant="outlined">
                                         </TextField>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <TextField onInput={e => recipe_data = e.target.value} fullWidth label="伝票番号" variant="outlined"></TextField>
+                                        <TextField onChange={handleRecieptChange} fullWidth label="伝票番号" variant="outlined"></TextField>
                                     </Grid>
                                     <Grid item xs={5}>
-                                        <TextField onInput={e => name_data = e.target.value} fullWidth label="お客様名" variant="outlined"></TextField>
+                                        <TextField onChange={handlenNameChange} fullWidth label="お客様名" variant="outlined"></TextField>
                                     </Grid>
                                     <Grid item xs={4}>
                                     <TextField
@@ -301,7 +254,7 @@ const AddSales =() => {
                                         {/* <SelectWork /> */}
                                     </Grid>
                                         <Grid item xs={3}>
-                                            <TextField onInput={e => price_data = GetPriceData(e.target.value, workItem, work)} fullWidth label="数量" variant="outlined"></TextField>
+                                            <TextField onInput={e => price_data = GetPriceData(e.target.value, workItem, work)} onChange={handleQuantityChange} fullWidth label="数量" variant="outlined"></TextField>
                                         </Grid>
                                         <Grid item xs={4}>
                                             {/* {WorkContents(workItem).map((val) =>(          
@@ -311,7 +264,7 @@ const AddSales =() => {
                                                 fullWidth label="金額" 
                                                 //value={price_data}
                                                 onClick={handlePriceFlgChange}
-                                                // onChange={() => setShowPrice(price_data)}
+                                                onChange={handlePriceChange}
                                                 onInput={e => price_data = e.target.value}
                                                 variant="outlined">
                                             </TextField>
@@ -326,10 +279,10 @@ const AddSales =() => {
                     </Card>
                 </Grid>
                 <Grid item xs={10}>
-                    <ShowSales rows={rows}/>
+                    <ShowSales rows={addRows}/>
                 </Grid>
                 <Grid item xs={4} justify="center">
-                    <Button variant="outlined" onClick={AddDataBase}>プッシュ</Button>
+                    <Button variant="outlined" onClick={AddDataBase} >プッシュ</Button>
                 </Grid>
             </Grid>
         </>

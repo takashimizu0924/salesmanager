@@ -19,8 +19,8 @@ const useStyles = makeStyles({
 });
 
 const columns = [
-    { id: 'date',label:'完了日',minWidth:170 },
-    { id: 'recipetNumber',label:'伝票番号',minWidth:170 },
+    { id: 'completedDate',label:'完了日',minWidth:170 },
+    { id: 'recieptNumber',label:'伝票番号',minWidth:170 },
     { id: 'name',label:'お客様名',minWidth:170 },
     { id: 'workItem',label:'工事内容',minWidth:170 },
     { id: 'quantity',label:'数量',minWidth:170 },
@@ -33,13 +33,6 @@ const ShowSales = (rows) => {
     const classes = useStyles();
     console.log(rows.rows)
     
-    // const [page, setPage] = React.useState(0);
-    // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    // const handleChangePage = (event, newPage) => {
-    //     setPage(newPage);
-    // };
-
     return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
@@ -58,8 +51,8 @@ const ShowSales = (rows) => {
                     <TableBody>
                         {rows.rows.map((row,index) => 
                         <TableRow key={ index } >
-                            <TableCell>{ row.date}</TableCell>
-                            <TableCell>{ row.recipetNumber}</TableCell>
+                            <TableCell>{ row.completedDate}</TableCell>
+                            <TableCell>{ row.recieptNumber}</TableCell>
                             <TableCell>{ row.name}</TableCell>
                             <TableCell>{ row.workItem}</TableCell>
                             <TableCell>{ row.quantity}</TableCell>
