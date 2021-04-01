@@ -4,7 +4,7 @@ import React from 'react';
 
 import './App.css';
 import  SideBar  from "./Components/Sidebar";
-import { Content } from "./Components/Content";
+import Content from "./Components/Content";
 import AddSales from './Components/AddSales';
 import SalesList from "./Components/SalesList";
 import { BrowserRouter ,Route, Switch } from 'react-router-dom';

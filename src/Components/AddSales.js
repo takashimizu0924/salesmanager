@@ -136,15 +136,18 @@ const GetPriceFlag = () => {
     return quantity_clickFlg;
 }
 
+
 // データベース登録 "POSTrequest"
 const AddDataBase = async() => {
-    
     const url = "http://localhost:8080/item"
-    await axios.post(url,addRows).then(res => {
+        await axios.post(url,addRows).then(res => {
         console.log(res)
-    })
-    // addRows = []
+        })
 }
+    
+    // *******TODO*******
+    // データベースに登録したら登録フォームの下の一覧は初期値にしたい
+
 
 const AddSales =() => {
     const classes = useStyles();
@@ -177,9 +180,8 @@ const AddSales =() => {
 
     // 登録内容を追加する場合のオブジェクト格納用
         // addRowsに格納する
-        // *******TODO********
-        // PriceがString型になっているためInt型にする
-
+    // ******TODO*******
+    // データを登録したら最後のからのデータも登録されているからそれを修繕する
     var data_object = {
         // id:id_data,
         completedDate:date,
@@ -199,7 +201,6 @@ const AddSales =() => {
     
 
     return (
-        <>
             <Grid container justify="center" className={classes.root}>
                 <Grid item xs={10}>
                     <Card className={classes.carfContent} >
@@ -270,8 +271,11 @@ const AddSales =() => {
                                             </TextField>
                                             
                                         </Grid>
-                                        <Grid item xs={2} alignContent="center" alignItems="center">
-                                            <Button variant="outlined" color="primary" size="large" type="submit">登録</Button>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" type="submit">登録</Button>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" onClick={AddDataBase} >プッシュ</Button>
                                         </Grid>
                                 </Grid>
                             </form>
@@ -281,11 +285,7 @@ const AddSales =() => {
                 <Grid item xs={10}>
                     <ShowSales rows={addRows}/>
                 </Grid>
-                <Grid item xs={4} justify="center">
-                    <Button variant="outlined" onClick={AddDataBase} >プッシュ</Button>
-                </Grid>
             </Grid>
-        </>
     )
 }
 

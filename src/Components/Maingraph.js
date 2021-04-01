@@ -1,12 +1,23 @@
-// import { Maximize } from '@material-ui/icons';
 import React from 'react'
-import { Line, Pie, Bar } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 
-const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
+export default function TotalGraph(props){
+  let labelList = []
+  let dataList = []
+  for ( var i in props.props){
+    labelList.push(props.props[i].completedDate)
+    dataList.push(props.props[i].price)
+  }
+  const options = {
+    maintainAspectRatio: false,
+    responsive: false,
+  };
+  let graphData = {
+    labels:labelList,
+    datasets:[
       {
-        label: '総売上推移',
+        label:'グラフ',
+        data:dataList,
         fill: true,
         lineTension: 0.1,
         backgroundColor: 'rgba(75,192,192,0.4)',
@@ -24,53 +35,21 @@ const data = {
         pointHoverBorderWidth: 1,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: [20, 15, 21, 31, 34, 40, 48]
-      }
-    ]
+      },
+    ],
   };
 
-  const options = {
-    maintainAspectRatio: false,
-    responsive: false,
-  };
-
-export const MainGraph = () => {
-    return (
-        <>
-          <Line 
-            options={options}
-            data={data}
-            width={1200}
-            height={300} />  
-        </>
-    )
+return (
+  <div>
+    <Bar 
+    options={options}
+    data={graphData}
+    width={1200}
+    height={300} />
+  </div>
+)
 }
 
-export const PieGraph = () => {
-  return(
-    <>
-      <Pie
-        options={options}
-        data={data}
-        width={330}
-        height={200}
-      />
-    </>
-  )
-}
-
-export const BarGraph = () => {
-  return (
-    <>
-      <Bar
-        options={options}
-        data={data}
-        width={300}
-        height={200}
-      />
-    </>
-  )
-}
 
 
 

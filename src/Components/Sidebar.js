@@ -155,14 +155,9 @@ const　Sidebar= (props)=> {
         </div>
         <Divider />
         <List className={classes.drawerList}>
-          {/* {['Home', '売上管理', '経費管理', '口座管理','人事管理','バージョン'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText className={classes.drawerListText} primary={text} />
-            </ListItem>
-          ))} */}
+          
           <Link to={"/home"} className={classes.link}>
-            <ListItem button onClick >
+            <ListItem button >
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText className={classes.drawerListText} primary={"Home"} />
             </ListItem>

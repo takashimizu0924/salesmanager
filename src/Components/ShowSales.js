@@ -34,6 +34,7 @@ const ShowSales = (rows) => {
     console.log(rows.rows)
     
     return (
+        <div>
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
                 <Table stickyHeader >
@@ -63,6 +64,7 @@ const ShowSales = (rows) => {
                 </Table>
             </TableContainer>
         </Paper>
+    </div>
     )
 }
 

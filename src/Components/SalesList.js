@@ -56,13 +56,13 @@ const SalesList = () => {
             <TableContainer>
                 <Table>
                     <TableHead>
-                        <TextField fullWidth select >
+                        {/* <TextField fullWidth select >
                             { selectDate.map((val) =>(
                                 <MenuItem key={val.value} value={val.value}>
                                     {val.value}
                                 </MenuItem>
                             ))}
-                        </TextField>
+                        </TextField> */}
                         <TableRow>
                             { columns.map((column) => (
                                 <TableCell key={ column.id }>
