@@ -31,7 +31,7 @@ const columns = [
 
 const ShowSales = (rows) => {
     const classes = useStyles();
-    console.log(rows.rows)
+    
     
     return (
         <div>

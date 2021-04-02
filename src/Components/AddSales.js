@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 // import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import  { Button, Grid, MenuItem, Select, useFormControl }  from '@material-ui/core';
+import  { Button, Grid, Input, MenuItem, Select, useFormControl }  from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -13,7 +13,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import ShowSales from "./ShowSales";
 
@@ -151,7 +151,7 @@ const AddDataBase = async() => {
 
 const AddSales =() => {
     const classes = useStyles();
-    const { handleSubmit } = useForm();
+    const { handleSubmit, register, control ,errors } = useForm();
     const [date, setDate ] = React.useState("");
     const [reciept, setReciept ] = React.useState("");
     const [name, setName ] = React.useState("");
@@ -176,7 +176,7 @@ const AddSales =() => {
         return totalPrice
     }
     var d = calcPrice();
-    console.log(d)
+
 
     // 登録内容を追加する場合のオブジェクト格納用
         // addRowsに格納する
@@ -212,46 +212,60 @@ const AddSales =() => {
                                 <Grid container spacing={2} justify="flex-end">
                                     <Grid item xs={3} >
                                         {/* <DatePicker /> */}
-                                        <TextField type="date" onChange={handleDateChange} variant="outlined">
+                                        <TextField type="date" onChange={handleDateChange} variant="outlined" name="date" inputRef={register({required:"必須項目です"})} error={Boolean(errors.date)} helperText={errors.date && errors.date.message}>
                                         </TextField>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <TextField onChange={handleRecieptChange} fullWidth label="伝票番号" variant="outlined"></TextField>
+                                        <TextField onChange={handleRecieptChange} fullWidth label="伝票番号" variant="outlined" name="reciept" inputRef={register({required:"必須項目です"})} error={Boolean(errors.reciept)} helperText={errors.reciept && errors.reciept.message}></TextField>
                                     </Grid>
                                     <Grid item xs={5}>
-                                        <TextField onChange={handlenNameChange} fullWidth label="お客様名" variant="outlined"></TextField>
+                                        <TextField onChange={handlenNameChange} fullWidth label="お客様名" variant="outlined" name="name" inputRef={register({required:"必須項目です"})} error={Boolean(errors.name)} helperText={errors.name && errors.name.message}></TextField>
                                     </Grid>
                                     <Grid item xs={4}>
-                                    <TextField
-                                        variant="outlined"
-                                        fullWidth
-                                        select
-                                        label="セレクト"
-                                        value={workItem}
-                                        onChange={handleChange}
-                                        onInput={e => setWorkItem(e.target.value)}>
-                                            {workItems.map((val) => (
-                                            <MenuItem key={val.value} value={val.value} >
-                                                {val.label}
-                                            </MenuItem>))}
-                                    </TextField>
+                                    <Controller
+                                    name="select"
+                                    control={control}
+                                    rules={{ required: "必須項目です"}}
+                                    as={
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            select
+                                            label="セレクト"
+                                            value={workItem}
+                                            onChange={handleChange}
+                                            onInput={e => setWorkItem(e.target.value)} error={Boolean(errors.select)} helperText={errors.select && errors.select.message}>
+                                                {workItems.map((val) => (
+                                                <MenuItem key={val.value} value={val.value} >
+                                                    {val.label}
+                                                </MenuItem>))}
+                                        </TextField>
+                                    }
+                                    />
                                         {/* <SelectWorkItem /> */}
                                     </Grid>
                                     <Grid item xs={8}>
-                                    <TextField
-                                        variant="outlined"
-                                        fullWidth
-                                        select
-                                        label="工事内容"
-                                        value={work}
-                                        onInput={e => setWork(e.target.value)}
-                                        onChange={handleWorkChange}>
-                                            {WorkContents(workItem).map((val) =>(
-                                                <MenuItem key = {val.name} value={val.name}>
-                                                    {val.name}
-                                                </MenuItem>
-                                            ))}
-                                    </TextField>
+                                    <Controller
+                                        name="work"
+                                        control={control}
+                                        rules={{ required:"必須項目です"}}
+                                        as={
+                                        <TextField
+                                            variant="outlined"
+                                            fullWidth
+                                            select
+                                            label="工事内容"
+                                            value={work}
+                                            onInput={e => setWork(e.target.value)}
+                                            onChange={handleWorkChange} error={Boolean(errors.work)} helperText={errors.work && errors.work.message}>
+                                                {WorkContents(workItem).map((val) =>(
+                                                    <MenuItem key = {val.name} value={val.name}>
+                                                        {val.name}
+                                                    </MenuItem>
+                                                ))}
+                                        </TextField>
+                                        }
+                                        />
                                         {/* <SelectWork /> */}
                                     </Grid>
                                         <Grid item xs={3}>
